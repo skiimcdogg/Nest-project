@@ -15,7 +15,7 @@ async function createConnectionToDB() {
 } 
 
 async function createAndFillExtensionsTable(dbConnection) {
-  return new Promise((resolve, reject) => {
+  try {
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS extensions (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,56 +23,36 @@ async function createAndFillExtensionsTable(dbConnection) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `;
 
-      dbConnection.query(createTableQuery, (err) => {
-        if(err) {
-          console.error(`Error during table creation : ${err.message}`);
-          reject(err)
-          return;
-        } else {
-          console.log('Table created successfully !');
+    await dbConnection.execute(createTableQuery);
+    console.log('Table created successfully !');
 
-          // Insérer des données dans la table
-          const insertDataQuery = `
-            INSERT INTO extensions (code)
-            VALUES ('khm'), ('afr'), ('znr'), ('eld')
-          `;
+    const insertDataQuery = `
+      INSERT INTO extensions (code)
+      VALUES ('khm'), ('afr'), ('znr'), ('eld')
+    `;
 
-          dbConnection.query(insertDataQuery, (err) => {
-            if(err) {
-              console.error(`Error during insertion : ${err.message}`);
-              reject(err);
-              return;
-            } else {
-              console.log('Inserted successfully !');
-              resolve();
-            }
-          });
-        }
-      });
-  });
+    await dbConnection.execute(insertDataQuery);
+    console.log('Inserted successfully !');
+
+    } catch(err) {
+      console.error(`Error during insertion or creation : ${err.message}`);
+    }
 } 
 
 async function retrieveExtensionsCodesArray(dbConnection) {
-  return new Promise((resolve, reject) => {
-
+  try {
     const selectAllExtensionsQuery = 'SELECT * FROM extensions';
-
-    dbConnection.query(selectAllExtensionsQuery, (err, results) => {
-      if(err) {
-        console.error(`Error during the select query : ${err.message}`);
-        reject(err);
-        return;
-      }
-
-    const extensionsArray = results.map((row) => row.code);
+    const results = await dbConnection.execute(selectAllExtensionsQuery);
+    console.log("Extensions retrieved successfully !");
+    const extensionsArray = await results[0].map((row) => row.code);
+    return extensionsArray;
+  } catch(err) {
+    console.error(`Error during retireving extensions process : ${err}`);
+  }
     
-    resolve(extensionsArray);
-    })
-  });
 }
 
 async function createExtensionTables(dbConnection, extensionCode, apiSetCall) {
-  return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.get(apiSetCall + extensionCode)
       if(response.status === 200) {
@@ -83,35 +63,29 @@ async function createExtensionTables(dbConnection, extensionCode, apiSetCall) {
       }
       const extensionJson = response.data;
       const tableName = extensionJson["set"]["name"] + " extension"
+
       const createExtensionTableQuery = `
         CREATE TABLE IF NOT EXISTS \`${tableName}\` (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) DEFAULT NULL,
+        name VARCHAR(1000) DEFAULT NULL,
         manaCost VARCHAR(255) DEFAULT NULL,
         colorIdentity JSON DEFAULT NULL,
         type VARCHAR(255) DEFAULT NULL,
-        text VARCHAR(255) DEFAULT NULL,
-        flavor VARCHAR(255) DEFAULT NULL,
+        rarity VARCHAR(255) DEFAULT NULL,
+        text VARCHAR(1000) DEFAULT NULL,
+        flavor VARCHAR(1000) DEFAULT NULL,
         power VARCHAR(255) DEFAULT NULL,
         toughness VARCHAR(255) DEFAULT NULL,
-        imageUrl VARCHAR(255) DEFAULT NULL
+        imageUrl VARCHAR(1000) DEFAULT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `
 
-      dbConnection.query(createExtensionTableQuery, (err) => {
-        if(err) {
-          console.error(`Error during extension table creation : ${err}`);
-          reject();
-          return;
-        } else {
-          resolve(tableName);
-        }
-      });
+      await dbConnection.query(createExtensionTableQuery);
+      console.log(`Table ${tableName} created successfully !`); 
+      return tableName;
     } catch(err) {
       console.error(`Error during the API call or the table creation : ${err}`);
-      reject();
     }
-  });
 }
 
 async function fetchCards(pageCards, extensionCode, apiCardsCall, cardsList) {
@@ -137,31 +111,30 @@ async function fetchCards(pageCards, extensionCode, apiCardsCall, cardsList) {
 }
 
 async function fillExtensionTable(dbConnection, tableName, extensionCardsList) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const insertSqlrequest = `
-      INSERT INTO \`${tableName}\` (name, manaCost, colorIdentity, type, text, flavor, power, toughness, imageUrl) VALUES ?
-      `
-  
-      const cardsValuesForTable = extensionCardsList.map((card) => [
-        card["name"],
-        card["manaCost"],
-        card["colorIdentity"],
-        card["type"],
-        card["text"],
-        card["flavor"],
-        card["power"],
-        card["toughness"],
-        card["imageUrl"],
-      ]);
-      await dbConnection.execute(insertSqlrequest, [cardsValuesForTable]);
-      console.log("Data inserted into table successfully !");
-      resolve();
-    } catch(err) {
-      console.log(`Error during the insertion of the data : ${err}`);
-      reject(err);
-    }
-  });
+  try {
+    const insertSqlrequest = `
+      INSERT INTO \`${tableName}\` (name, manaCost, colorIdentity, type, rarity, text, flavor, power, toughness, imageUrl)
+      VALUES ?
+    `;
+
+    const cardsValuesForTable = extensionCardsList.map((card) => [
+      card.name,
+      card.manaCost,
+      JSON.stringify(card.colorIdentity),
+      card.type,
+      card.rarity,
+      card.text,
+      card.flavor,
+      card.power,
+      card.toughness,
+      card.imageUrl,
+    ]);
+
+    await dbConnection.query(insertSqlrequest, [cardsValuesForTable]);
+    console.log("Data inserted into table successfully !");
+  } catch (err) {
+    console.log(`Error during the insertion of the data : ${err}`);
+  }
 }
 
 async function fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tableName, apiCardsCall) {
@@ -185,28 +158,37 @@ async function fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tabl
 
 async function getCardsFromExtensionsAndFillNewTables(dbConnection, extensionsArray) {
   return new Promise(async (resolve, reject) => {
-    const apiSetCall = 'https://api.magicthegathering.io/v1/sets/'
-    for(const extensionCode of extensionsArray) {
-      const apiCardsCall = `https://api.magicthegathering.io/v1/cards?set=${extensionCode}&page=`
-      const tableName = await createExtensionTables(dbConnection, extensionCode, apiSetCall);
-      console.log(`${tableName} table created !`);
-      await fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tableName, apiCardsCall);
+    try {
+      const apiSetCall = 'https://api.magicthegathering.io/v1/sets/'
+      for(const extensionCode of extensionsArray) {
+        const apiCardsCall = `https://api.magicthegathering.io/v1/cards?set=${extensionCode}&page=`
+        const tableName = await createExtensionTables(dbConnection, extensionCode, apiSetCall);
+        console.log("==========>", tableName);
+        await fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tableName, apiCardsCall);
+      }
+      resolve()
+    } catch(err) {
+      console.error(`Error during the process of fetching cards and fill tables functions : ${err}`)
+      reject(err)
     }
+    
   });
 }
 
 async function createAndConnectToContainerDB() {
-
     try {
       const dbConnection = await createConnectionToDB();
       console.log("Database connection established.");
-      await createAndFillExtensionsTable(dbConnection)
+
+      await createAndFillExtensionsTable(dbConnection);
+
       const extensionsArray = await retrieveExtensionsCodesArray(dbConnection);
-      console.log("=====>", extensionsArray);
+
       await getCardsFromExtensionsAndFillNewTables(dbConnection, extensionsArray);
-      dbConnection.end()
+      dbConnection.end();
   } catch(err) {
       console.error(`An error occurred: ${err.message}`);
-  }
+  };
 }
+
 createAndConnectToContainerDB();
