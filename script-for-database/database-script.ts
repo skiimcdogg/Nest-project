@@ -1,20 +1,28 @@
-import mysql from 'mysql2/promise';
+import mysql, { 
+  ConnectionOptions,
+  ResultSetHeader,
+ } from 'mysql2/promise';
 import axios from 'axios';
 
-async function createConnectionToDB() {
+interface ExtensionRow {
+  id: number,
+  code: string
+}
+
+async function createConnectionToDB(): Promise<mysql.Connection> {
     const connection = await mysql.createConnection({
       host: '127.0.0.1',
       user: 'root',
       password: 'root',
       database: 'magic_extensions',
       port: 3306,
-    });
+    } as ConnectionOptions);
 
       console.log('Connected to the DB !');
       return connection;
 } 
 
-async function createAndFillExtensionsTable(dbConnection) {
+async function createAndFillExtensionsTable(dbConnection: mysql.Connection): Promise<void> {
   try {
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS extensions (
@@ -23,7 +31,7 @@ async function createAndFillExtensionsTable(dbConnection) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `;
 
-    await dbConnection.execute(createTableQuery);
+    await dbConnection.query<ResultSetHeader>(createTableQuery);
     console.log('Table created successfully !');
 
     const insertDataQuery = `
@@ -31,7 +39,7 @@ async function createAndFillExtensionsTable(dbConnection) {
       VALUES ('khm'), ('afr'), ('znr'), ('eld')
     `;
 
-    await dbConnection.execute(insertDataQuery);
+    await dbConnection.query<ResultSetHeader>(insertDataQuery);
     console.log('Inserted successfully !');
 
     } catch(err) {
@@ -39,27 +47,29 @@ async function createAndFillExtensionsTable(dbConnection) {
     }
 } 
 
-async function retrieveExtensionsCodesArray(dbConnection) {
+async function retrieveExtensionsCodesArray(dbConnection: mysql.Connection): Promise<string[]> {
   try {
     const selectAllExtensionsQuery = 'SELECT * FROM extensions';
-    const results = await dbConnection.execute(selectAllExtensionsQuery);
+    const results = await dbConnection.query(selectAllExtensionsQuery);
     console.log("Extensions retrieved successfully !");
-    const extensionsArray = await results[0].map((row) => row.code);
-    return extensionsArray;
+    if(Array.isArray(results[0])) {
+      return (results[0] as ExtensionRow[]).map(row => row.code);
+    } else {
+      throw new Error("Expected results[0] to be an array.");
+    }
   } catch(err) {
     console.error(`Error during retireving extensions process : ${err}`);
-  }
-    
+    return []
+  } 
 }
 
-async function createExtensionTables(dbConnection, extensionCode, apiSetCall) {
+async function createExtensionTables(dbConnection: mysql.Connection, extensionCode: string, apiSetCall: string): Promise<string> {
     try {
       const response = await axios.get(apiSetCall + extensionCode)
       if(response.status === 200) {
         console.log("Api call done !");
       } else {
-        console.error("Error during Api call");
-        return;
+        throw new Error("Error during Api call")
       }
       const extensionJson = response.data;
       const tableName = extensionJson["set"]["name"] + " extension"
@@ -80,15 +90,16 @@ async function createExtensionTables(dbConnection, extensionCode, apiSetCall) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `
 
-      await dbConnection.query(createExtensionTableQuery);
+      await dbConnection.query<ResultSetHeader>(createExtensionTableQuery);
       console.log(`Table ${tableName} created successfully !`); 
       return tableName;
     } catch(err) {
       console.error(`Error during the API call or the table creation : ${err}`);
+      return ""
     }
 }
 
-async function fetchCards(pageCards, extensionCode, apiCardsCall, cardsList) {
+async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall: string, cardsList: any[]) {
   return new Promise(async (resolve, reject) => {
     const urlCards = apiCardsCall.replace("${extensionCode}", extensionCode);
     try {
