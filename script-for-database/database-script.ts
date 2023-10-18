@@ -9,6 +9,37 @@ interface ExtensionRow {
   code: string
 }
 
+interface MagicCardObject {
+  name: string,
+  manaCost: string,
+  cmc: number,
+  colors: string[],
+  colorIdentity: string[],
+  type: string,
+  supertypes: string[],
+  types: string[],
+  rarity: string[],
+  set: string,
+  setName: string,
+  text: string,
+  flavor: string,
+  artist: string,
+  number: string,
+  power: string,
+  toughness: string,
+  layout: string,
+  multiverseid: string,
+  imageUrl: string,
+  variations: string,
+  rulings: any[],
+  foreignNames: any[],
+  printings: string[],
+  originalText: string,
+  originalType: string,
+  legalities: any[],
+  id: string,
+}
+
 async function createConnectionToDB(): Promise<mysql.Connection> {
     const connection = await mysql.createConnection({
       host: '127.0.0.1',
@@ -99,7 +130,7 @@ async function createExtensionTables(dbConnection: mysql.Connection, extensionCo
     }
 }
 
-async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall: string, cardsList: any[]) {
+async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall: string, cardsList: MagicCardObject[]): Promise<MagicCardObject[]> {
   return new Promise(async (resolve, reject) => {
     const urlCards = apiCardsCall.replace("${extensionCode}", extensionCode);
     try {
@@ -121,14 +152,14 @@ async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall
   });
 }
 
-async function fillExtensionTable(dbConnection, tableName, extensionCardsList) {
+async function fillExtensionTable(dbConnection: mysql.Connection, tableName: string, extensionCardsList: MagicCardObject[]): Promise<void> {
   try {
     const insertSqlrequest = `
       INSERT INTO \`${tableName}\` (name, manaCost, colorIdentity, type, rarity, text, flavor, power, toughness, imageUrl)
       VALUES ?
     `;
 
-    const cardsValuesForTable = extensionCardsList.map((card) => [
+    const cardsValuesForTable = extensionCardsList.map((card: MagicCardObject) => [
       card.name,
       card.manaCost,
       JSON.stringify(card.colorIdentity),
@@ -141,18 +172,18 @@ async function fillExtensionTable(dbConnection, tableName, extensionCardsList) {
       card.imageUrl,
     ]);
 
-    await dbConnection.query(insertSqlrequest, [cardsValuesForTable]);
+    await dbConnection.query<ResultSetHeader>(insertSqlrequest, [cardsValuesForTable]);
     console.log("Data inserted into table successfully !");
   } catch (err) {
     console.log(`Error during the insertion of the data : ${err}`);
   }
 }
 
-async function fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tableName, apiCardsCall) {
+async function fetchCardsAndFillExtensionTable(dbConnection: mysql.Connection, extensionCode: string, tableName: string, apiCardsCall: string): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
-      const cardsList = [];
-      const extensionCardsList = await fetchCards(1, extensionCode, apiCardsCall, cardsList);
+      const cardsList: MagicCardObject[] = [];
+      const extensionCardsList: MagicCardObject[] = await fetchCards(1, extensionCode, apiCardsCall, cardsList);
       if(extensionCardsList.length === 0) {
         console.log("Error during the fetching cards process !");
         reject();
@@ -167,10 +198,10 @@ async function fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tabl
   });
 }
 
-async function getCardsFromExtensionsAndFillNewTables(dbConnection, extensionsArray) {
+async function getCardsFromExtensionsAndFillNewTables(dbConnection: mysql.Connection, extensionsArray: string[]): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
-      const apiSetCall = 'https://api.magicthegathering.io/v1/sets/'
+      const apiSetCall: string = 'https://api.magicthegathering.io/v1/sets/'
       for(const extensionCode of extensionsArray) {
         const apiCardsCall = `https://api.magicthegathering.io/v1/cards?set=${extensionCode}&page=`
         const tableName = await createExtensionTables(dbConnection, extensionCode, apiSetCall);
@@ -186,14 +217,14 @@ async function getCardsFromExtensionsAndFillNewTables(dbConnection, extensionsAr
   });
 }
 
-async function createAndConnectToContainerDB() {
+async function createAndConnectToContainerDB(): Promise<void> {
     try {
       const dbConnection = await createConnectionToDB();
       console.log("Database connection established.");
 
       await createAndFillExtensionsTable(dbConnection);
 
-      const extensionsArray = await retrieveExtensionsCodesArray(dbConnection);
+      const extensionsArray: string[] = await retrieveExtensionsCodesArray(dbConnection);
 
       await getCardsFromExtensionsAndFillNewTables(dbConnection, extensionsArray);
       dbConnection.end();
