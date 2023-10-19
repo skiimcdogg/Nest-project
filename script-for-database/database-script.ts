@@ -1,8 +1,8 @@
-import mysql, { 
-  ConnectionOptions,
-  ResultSetHeader,
- } from 'mysql2/promise';
+import * as mysql from 'mysql2/promise';
+import * as dotenv from 'dotenv';
 import axios from 'axios';
+
+dotenv.config({ path: "./.env"});
 
 interface ExtensionRow {
   id: number,
@@ -43,11 +43,11 @@ interface MagicCardObject {
 async function createConnectionToDB(): Promise<mysql.Connection> {
     const connection = await mysql.createConnection({
       host: '127.0.0.1',
-      user: 'root',
-      password: 'root',
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
       database: 'magic_extensions',
       port: 3306,
-    } as ConnectionOptions);
+    } as mysql.ConnectionOptions);
 
       console.log('Connected to the DB !');
       return connection;
@@ -62,7 +62,7 @@ async function createAndFillExtensionsTable(dbConnection: mysql.Connection): Pro
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `;
 
-    await dbConnection.query<ResultSetHeader>(createTableQuery);
+    await dbConnection.query<mysql.ResultSetHeader>(createTableQuery);
     console.log('Table created successfully !');
 
     const insertDataQuery = `
@@ -70,7 +70,7 @@ async function createAndFillExtensionsTable(dbConnection: mysql.Connection): Pro
       VALUES ('khm'), ('afr'), ('znr'), ('eld')
     `;
 
-    await dbConnection.query<ResultSetHeader>(insertDataQuery);
+    await dbConnection.query<mysql.ResultSetHeader>(insertDataQuery);
     console.log('Inserted successfully !');
 
     } catch(err) {
@@ -121,7 +121,7 @@ async function createExtensionTables(dbConnection: mysql.Connection, extensionCo
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
       `
 
-      await dbConnection.query<ResultSetHeader>(createExtensionTableQuery);
+      await dbConnection.query<mysql.ResultSetHeader>(createExtensionTableQuery);
       console.log(`Table ${tableName} created successfully !`); 
       return tableName;
     } catch(err) {
@@ -172,7 +172,7 @@ async function fillExtensionTable(dbConnection: mysql.Connection, tableName: str
       card.imageUrl,
     ]);
 
-    await dbConnection.query<ResultSetHeader>(insertSqlrequest, [cardsValuesForTable]);
+    await dbConnection.query<mysql.ResultSetHeader>(insertSqlrequest, [cardsValuesForTable]);
     console.log("Data inserted into table successfully !");
   } catch (err) {
     console.log(`Error during the insertion of the data : ${err}`);

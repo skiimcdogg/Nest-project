@@ -1,8 +1,11 @@
 # compiled output
 /dist
+/script-output
 /node_modules
 */node_modules
 */mysql-data
+
+.env
 
 # Logs
 logs
