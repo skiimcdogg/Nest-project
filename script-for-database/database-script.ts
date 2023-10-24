@@ -53,25 +53,15 @@ async function createConnectionToDB(): Promise<mysql.Connection> {
       return connection;
 } 
 
-async function createAndFillExtensionsTable(dbConnection: mysql.Connection): Promise<void> {
+async function FillExtensionsTable(dbConnection: mysql.Connection): Promise<void> {
   try {
-    const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS extensions (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          code VARCHAR(255) DEFAULT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-      `;
-
-    await dbConnection.query<mysql.ResultSetHeader>(createTableQuery);
-    console.log('Table created successfully !');
-
     const insertDataQuery = `
       INSERT INTO extensions (code)
       VALUES ('khm'), ('afr'), ('znr'), ('eld')
     `;
 
     await dbConnection.query<mysql.ResultSetHeader>(insertDataQuery);
-    console.log('Inserted successfully !');
+    console.log('Inserted into extensions table successfully !');
 
     } catch(err) {
       console.error(`Error during insertion or creation : ${err.message}`);
@@ -92,42 +82,6 @@ async function retrieveExtensionsCodesArray(dbConnection: mysql.Connection): Pro
     console.error(`Error during retireving extensions process : ${err}`);
     return []
   } 
-}
-
-async function createExtensionTables(dbConnection: mysql.Connection, extensionCode: string, apiSetCall: string): Promise<string> {
-    try {
-      const response = await axios.get(apiSetCall + extensionCode)
-      if(response.status === 200) {
-        console.log("Api call done !");
-      } else {
-        throw new Error("Error during Api call")
-      }
-      const extensionJson = response.data;
-      const tableName = extensionJson["set"]["name"] + " extension"
-
-      const createExtensionTableQuery = `
-        CREATE TABLE IF NOT EXISTS \`${tableName}\` (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(1000) DEFAULT NULL,
-        manaCost VARCHAR(255) DEFAULT NULL,
-        colorIdentity JSON DEFAULT NULL,
-        type VARCHAR(255) DEFAULT NULL,
-        rarity VARCHAR(255) DEFAULT NULL,
-        text VARCHAR(1000) DEFAULT NULL,
-        flavor VARCHAR(1000) DEFAULT NULL,
-        power VARCHAR(255) DEFAULT NULL,
-        toughness VARCHAR(255) DEFAULT NULL,
-        imageUrl VARCHAR(1000) DEFAULT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-      `
-
-      await dbConnection.query<mysql.ResultSetHeader>(createExtensionTableQuery);
-      console.log(`Table ${tableName} created successfully !`); 
-      return tableName;
-    } catch(err) {
-      console.error(`Error during the API call or the table creation : ${err}`);
-      return ""
-    }
 }
 
 async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall: string, cardsList: MagicCardObject[]): Promise<MagicCardObject[]> {
@@ -152,10 +106,10 @@ async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall
   });
 }
 
-async function fillExtensionTable(dbConnection: mysql.Connection, tableName: string, extensionCardsList: MagicCardObject[]): Promise<void> {
+async function fillExtensionTable(dbConnection: mysql.Connection, extensionCardsList: MagicCardObject[]): Promise<void> {
   try {
     const insertSqlrequest = `
-      INSERT INTO \`${tableName}\` (name, manaCost, colorIdentity, type, rarity, text, flavor, power, toughness, imageUrl)
+      INSERT INTO magic_cards (name, manaCost, colorIdentity, type, rarity, setName, text, flavor, power, toughness, imageUrl)
       VALUES ?
     `;
 
@@ -165,6 +119,7 @@ async function fillExtensionTable(dbConnection: mysql.Connection, tableName: str
       JSON.stringify(card.colorIdentity),
       card.type,
       card.rarity,
+      card.setName,
       card.text,
       card.flavor,
       card.power,
@@ -179,7 +134,7 @@ async function fillExtensionTable(dbConnection: mysql.Connection, tableName: str
   }
 }
 
-async function fetchCardsAndFillExtensionTable(dbConnection: mysql.Connection, extensionCode: string, tableName: string, apiCardsCall: string): Promise<void> {
+async function fetchCardsAndFillExtensionTable(dbConnection: mysql.Connection, extensionCode: string, apiCardsCall: string): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
       const cardsList: MagicCardObject[] = [];
@@ -189,7 +144,7 @@ async function fetchCardsAndFillExtensionTable(dbConnection: mysql.Connection, e
         reject();
         return;
       } 
-      await fillExtensionTable(dbConnection, tableName, extensionCardsList);
+      await fillExtensionTable(dbConnection, extensionCardsList);
       resolve()
     } catch(err) {
       console.error(`Error during the API call or the table creation : ${err}`);
@@ -204,9 +159,7 @@ async function getCardsFromExtensionsAndFillNewTables(dbConnection: mysql.Connec
       const apiSetCall: string = 'https://api.magicthegathering.io/v1/sets/'
       for(const extensionCode of extensionsArray) {
         const apiCardsCall = `https://api.magicthegathering.io/v1/cards?set=${extensionCode}&page=`
-        const tableName = await createExtensionTables(dbConnection, extensionCode, apiSetCall);
-        console.log("==========>", tableName);
-        await fetchCardsAndFillExtensionTable(dbConnection, extensionCode, tableName, apiCardsCall);
+        await fetchCardsAndFillExtensionTable(dbConnection, extensionCode, apiCardsCall);
       }
       resolve()
     } catch(err) {
@@ -222,7 +175,7 @@ async function createAndConnectToContainerDB(): Promise<void> {
       const dbConnection = await createConnectionToDB();
       console.log("Database connection established.");
 
-      await createAndFillExtensionsTable(dbConnection);
+      await FillExtensionsTable(dbConnection);
 
       const extensionsArray: string[] = await retrieveExtensionsCodesArray(dbConnection);
 
