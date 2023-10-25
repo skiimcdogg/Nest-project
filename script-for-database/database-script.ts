@@ -55,6 +55,20 @@ async function createConnectionToDB(): Promise<mysql.Connection> {
 
 async function FillExtensionsTable(dbConnection: mysql.Connection): Promise<void> {
   try {
+    const checkIfDataExistsQuery = `
+      SELECT EXISTS (
+        SELECT 1 FROM extensions
+        WHERE code IN ('khm', 'afr', 'znr', 'eld')
+      ) AS 'exists';
+    `;
+
+    const [rows] = await dbConnection.query<any>(checkIfDataExistsQuery);
+
+    if (rows[0].exists === 1) {
+      console.log('Data already exists in extensions table.');
+      return;
+    }
+
     const insertDataQuery = `
       INSERT INTO extensions (code)
       VALUES ('khm'), ('afr'), ('znr'), ('eld')
