@@ -18,7 +18,7 @@ interface MagicCardObject {
   type: string,
   supertypes: string[],
   types: string[],
-  rarity: string[],
+  rarity: string,
   set: string,
   setName: string,
   text: string,
@@ -70,8 +70,8 @@ async function FillExtensionsTable(dbConnection: mysql.Connection): Promise<void
     }
 
     const insertDataQuery = `
-      INSERT INTO extensions (code)
-      VALUES ('khm'), ('afr'), ('znr'), ('eld')
+      INSERT INTO extensions (code, setName)
+      VALUES ('khm', 'kaldheim'), ('afr', 'Adventures in the Forgotten Realms'), ('znr', 'Zendikar Rising'), ('eld', 'Throne of Eldraine')
     `;
 
     await dbConnection.query<mysql.ResultSetHeader>(insertDataQuery);
