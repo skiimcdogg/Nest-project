@@ -1,22 +1,29 @@
-import { Controller, Get, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, ValidationPipe } from '@nestjs/common';
 import { ExtensionsService } from './extensions.service';
+import { Extensions } from './extensions.entity';
+import { CreateExtensionsDto } from './extensions-dtos/create-extensions-dto';
 
 @Controller('extensions')
 export class ExtensionsController {
     constructor(private readonly extensionsService: ExtensionsService) {}
 
-    @Get()
-    getAllExtensions() {
+    @Get('all')
+    getAllExtensions(): Promise<Extensions[]> {
         return this.extensionsService.findAll();
     }
 
     @Get(':id')
-    getOneExtensions(@Param('id') id: number) {
+    getOneExtensions(@Param('id') id: number): Promise<Extensions | null> {
         return this.extensionsService.findOne(id);
     }
 
+    @Post('create')
+    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto) {
+        await this.extensionsService.createExtension(createExtensionDto)
+    }
+
     @Delete(':id')
-    deleteOneExtensions(@Param('id') id: number) {
-        return this.extensionsService.remove(id);
+    async deleteOneExtensions(@Param('id') id: number): Promise<void> {
+        await this.extensionsService.remove(id);
     }
 }

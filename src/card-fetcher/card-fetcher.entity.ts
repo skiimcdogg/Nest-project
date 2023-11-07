@@ -12,7 +12,7 @@ export class CardFetcher {
     manaCost: string;
 
     @Column({ type: 'json', default: null })
-    colorIdentity: any;
+    colorIdentity: string[];
 
     @Column({ default: null })
     type: string;

@@ -2,23 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Extensions } from './extensions.entity';
+import { CreateExtensionsDto } from './extensions-dtos/create-extensions-dto';
 
 @Injectable()
 export class ExtensionsService {
   constructor(
     @InjectRepository(Extensions)
-    private usersRepository: Repository<Extensions>,
+    private extensionsRepository: Repository<Extensions>,
   ) {}
 
   findAll(): Promise<Extensions[]> {
-    return this.usersRepository.find();
+    return this.extensionsRepository.find();
   }
 
   findOne(id: number): Promise<Extensions | null> {
-    return this.usersRepository.findOneBy({id});
+    return this.extensionsRepository.findOneBy({id});
+  }
+
+  async createExtension(createExtensionsDto: CreateExtensionsDto) {
+    const extension = this.extensionsRepository.create(createExtensionsDto)
+    await this.extensionsRepository.save(extension)
   }
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    await this.extensionsRepository.delete(id);
   }
 }
