@@ -1,7 +1,6 @@
-import { Controller, Get, Patch, Delete, Param, Body, HttpCode, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Param, HttpCode } from '@nestjs/common';
 import { CardFetcherService } from './card-fetcher.service';
 import { CardFetcher } from './card-fetcher.entity';
-import { UpdateFavoriteDto } from './card-fetcher-dtos/update-favorite-dto';
 
 @Controller('card-fetcher')
 export class CardFetcherController {
@@ -22,14 +21,16 @@ export class CardFetcherController {
         return this.cardFetcherService.findOne(id);
     }
 
-    @Get(':setName')
+    @Get('extension/:setName')
     getManyCardsFromOneExtension(@Param('setName') setName: string): Promise<CardFetcher[]> {
         return this.cardFetcherService.findManyWithExtensionName(setName);
     }
 
-    @Patch('/cards/favorite/:id')
-    async setFavoriteStatus(@Param('id') id: number, @Body(ValidationPipe) updateFavoriteDto: UpdateFavoriteDto): Promise<void> {
-        await this.cardFetcherService.updateFavoriteStatus(id, updateFavoriteDto)
+    @Patch('/favorite/:id')
+    async setFavoriteStatus(@Param('id') id: number): Promise<string> {
+        const isFavorite = await this.cardFetcherService.updateFavoriteStatus(id);
+        const responseString = isFavorite ? `Card with ID ${id} set into favorites` : `Card with ID ${id} removed from favorites`;
+        return responseString;
     }
 
     @Delete(':id')

@@ -19,7 +19,7 @@ export class ExtensionsService {
     return this.extensionsRepository.findOneBy({id});
   }
 
-  async createExtension(createExtensionsDto: CreateExtensionsDto) {
+  async createExtension(createExtensionsDto: CreateExtensionsDto): Promise<void> {
     const extension = this.extensionsRepository.create(createExtensionsDto)
     await this.extensionsRepository.save(extension)
   }

@@ -18,12 +18,14 @@ export class ExtensionsController {
     }
 
     @Post('create')
-    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto) {
+    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {        
         await this.extensionsService.createExtension(createExtensionDto)
+        return `Extensions ${createExtensionDto["setName"]} created successfully.`
     }
 
     @Delete(':id')
-    async deleteOneExtensions(@Param('id') id: number): Promise<void> {
+    async deleteOneExtensions(@Param('id') id: number): Promise<string> {
         await this.extensionsService.remove(id);
+        return `Extension with ID ${id} deleted.`
     }
 }
