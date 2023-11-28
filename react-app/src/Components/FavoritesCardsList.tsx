@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom'
 import CardType from '../../type';
 import DeleteIcon from '../assets/images/delete-logo.svg';
+import DangerIcon from '../assets/images/danger-logo.svg';
 
 function FavoritesCardsList() {
     const [favoritesCards, setFavoritesCards] = useState<CardType[]>([])
@@ -36,18 +37,23 @@ function FavoritesCardsList() {
 
     return (
         <div>
-            <h2>All the favorites cards, wouaah</h2>
+            <h2>Your Favorites Cards</h2>
             {favoritesCards.length === 0 ? (
-                <p>No cards in favorites yet</p>
+                <div className="no-favorites">
+                    <img src={DangerIcon} />
+                    <p>No cards in favorites yet</p>
+                    <img src={DangerIcon} />
+                </div>
             ) : (
-                <div>
+                <div className="cards-list">
                 {!loading ? (
                     favoritesCards.map(card => (
                         <div key={card.id}>
                             <Link to={`/card/${card.id}`}>
-                                <img src={card.imageUrl} alt={card.name}/>
+                                <img className="card-in-list" src={card.imageUrl} alt={card.name}/>
                             </Link>
                             <img
+                            className="card-icon"
                             src={DeleteIcon}
                             alt="Delete logo"
                             onClick={() => removeFromFavorites(card.id)}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import Header from './Header';
 import ExtensionsFilter from './ExtensionsFilter';
 import CardsList from './CardsList';
 import ExtensionType from '../../type';
@@ -9,45 +8,35 @@ import CreateExtensionForm from './CreateExtensionForm';
 
 function Home() {
     const [extensions, setExtensions] = useState<ExtensionType[]>([]);
-    const [selectedExtension, setSelectedExtension] = useState<string>('all');
+    const [selectedExtension, setSelectedExtension] = useState<string>('');
     const [cards, setCards] = useState<CardType[]>([]);
     const [showCreateExtensionForm, setShowCreateExtensionForm] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        setLoading(true)
         axios.get('http://localhost:3000/extensions/all')
             .then(response => {
                 setExtensions(response.data) 
+                setLoading(false);
             })
             .catch(err => {
                 console.error('Error during the extensions fetching', err)
+                setLoading(false);
             })
-            setLoading(false);
     }, []);
 
     const fetchCards = () => {
         setLoading(true);
-        if(selectedExtension === 'all') {
-            axios.get('http://localhost:3000/card-fetcher/cards')
-                .then(response => {
-                    setCards(response.data) 
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error('Error during the cards fetching', err)
-                    setLoading(false);
-                })
-        } else {
-            axios.get('http://localhost:3000/card-fetcher/extension/' + selectedExtension)
-                .then(response => {
-                    setCards(response.data) 
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error('Error during the extensions fetching', err)
-                    setLoading(false);
-                })
-        }
+        axios.get('http://localhost:3000/card-fetcher/extension/' + selectedExtension)
+            .then(response => {
+                setCards(response.data) 
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Error during the extensions fetching', err)
+                setLoading(false);
+            })
     };
 
     const toggleFavorite = (cardId: number) => {
@@ -61,25 +50,34 @@ function Home() {
     };
 
     useEffect(() => {
-        fetchCards()
+        if(selectedExtension !== '') {
+            fetchCards()
+        }
+        
     }, [selectedExtension]);
 
     return (
         <div>
-            {/* <Header /> */}
             <ExtensionsFilter 
             extensions={extensions}
             selectedExtension={selectedExtension}
             setSelectedExtension={setSelectedExtension}
             />
-            <button onClick={() => setShowCreateExtensionForm(prev => !prev)}>
-                Show/Hide Creation Form
+            <button className="button-creation-form" onClick={() => setShowCreateExtensionForm(prev => !prev)}>
+                {showCreateExtensionForm ? "Hide Creation Form" : "Show Creation Form"}
             </button>
-            {showCreateExtensionForm && <CreateExtensionForm />}
-            <CardsList
-            cards={cards}
-            onToggleFavorite={toggleFavorite} 
-            />
+            {/* {showCreateExtensionForm && <CreateExtensionForm />} */}
+            <div className={`creation-form-component ${showCreateExtensionForm ? 'visible' : ''}`}>
+                <CreateExtensionForm />
+            </div>
+            {selectedExtension === "" ? 
+            <p>Please select an extension</p>
+            : !loading && <CardsList
+                cards={cards}
+                onToggleFavorite={toggleFavorite} 
+                />
+            }
+            
         </div>
     );
 }

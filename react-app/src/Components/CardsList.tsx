@@ -10,20 +10,22 @@ type CardsListProps = {
 }
 
 function CardsList({ cards, onToggleFavorite }: CardsListProps) {
+    console.log("cards", cards);
+    
     return (
-        <div>
-            <h2>All the cards, wouaah</h2>
+        <div className="cards-list">
             {cards.map(card => (
-                <div key={card.id}>
+                card.imageUrl && (<div key={card.id}>
                     <Link to={`/card/${card.id}`}>
-                        <img src={card.imageUrl} alt={card.name}/>
+                        <img className="card-in-list" src={card.imageUrl} alt={card.name}/>
                     </Link>
                     <img
+                     className="card-icon"
                      src={card.favorite ? validateIcon : addIcon}
                      alt={card.favorite ? 'Remove from favorites' : 'Add to favorites'}
                      onClick={() => onToggleFavorite(card.id)}
                     />
-                </div>
+                </div>)
             ))}
         </div>
     );

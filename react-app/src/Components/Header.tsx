@@ -1,22 +1,31 @@
 import { Link } from 'react-router-dom';
 import magicLogo from '../assets/images/Magicthegathering-logo.svg.png'
+import favoriteLogo from '../assets/images/favorite-logo.svg'
+import homeLogo from '../assets/images/home-logo.svg'
 
 function Header() {
     return (
-        <div>
-            <h2>Bonjour Header</h2>
-            <Link to={'/'}>
+        <div className="header-component">
+            <div className="magic-logo-div">
+            <Link to={"/"}>
                 <img
-                src={magicLogo}
-                alt='Home magic logo'
+                src={homeLogo}
+                alt="Home logo"
                 />
             </Link>
-            <Link to={'/'}>
+            </div>
+            <img
+            src={magicLogo}
+            className="magic-logo"
+            />
+            <div>
+            <Link to={"/favorites"}>
                 <img
-                src={magicLogo}
-                alt='Home magic logo'
+                src={favoriteLogo}
+                alt="favorite logo"
                 />
             </Link>
+            </div>
         </div>
     );
 }

@@ -41,17 +41,19 @@ function CreateExtensionForm() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-
+            <form className="creation-form" onSubmit={handleSubmit}>
+                <label htmlFor="code">Code</label>
                 <input
                 type="text"
+                id="code"
                 name="code"
                 value={formFields.code}
                 onChange={handleInputChange} 
                 />
-
+                <label htmlFor="extension">Set Name</label>
                 <input
                 type="text"
+                id="extension"
                 name="extension"
                 value={formFields.setName}
                 onChange={handleInputChange} 
@@ -59,8 +61,8 @@ function CreateExtensionForm() {
 
                 <button type="submit">Create Extension</button>
             </form>
-            <p>Some examples of extensions you can create (code and set name): </p>
-            <p>"neo": "Kamigawa: Neon Dynasty", "snc": "Streets of New Capenna", "vow": "Innistrad: Crimson Vow", "iko", "Ikoria: Lair of Behemoths", "sta": "Strixhaven Mystical Archive"</p>
+            <p className="creation-infos">Some examples of extensions you can create (code and set name): </p>
+            <p className="creation-infos">"neo": "Kamigawa: Neon Dynasty", "snc": "Streets of New Capenna", "vow": "Innistrad: Crimson Vow", "iko", "Ikoria: Lair of Behemoths", "sta": "Strixhaven Mystical Archive"</p>
         </div>
     )
 };

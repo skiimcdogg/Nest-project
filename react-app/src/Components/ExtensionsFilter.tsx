@@ -14,13 +14,14 @@ function ExtensionsFilter({extensions, selectedExtension, setSelectedExtension}:
         if(extensionSelected) {
             setSelectedExtension(extensionSelected.setName)
         } else {
-            setSelectedExtension('all')
+            setSelectedExtension('')
         }
     };
 
     return (
         <div>
-            <select value={selectedExtension} onChange={handleExtensionChange}>
+            <select className="select-extension" value={selectedExtension} onChange={handleExtensionChange}>
+                <option value="">Please select an extension</option>
                 {extensions.map((extension) => (
                     <option key={extension.code} value={extension.setName}>
                         {extension.setName}
