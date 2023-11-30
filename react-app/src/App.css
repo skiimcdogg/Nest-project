@@ -97,6 +97,11 @@ body {
   background: #f7f7f7;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: larger;
+}
+
+.creation-form input {
+  font-size: 20px;
 }
 
 .creation-form label {

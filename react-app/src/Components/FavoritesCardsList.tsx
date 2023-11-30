@@ -40,9 +40,9 @@ function FavoritesCardsList() {
             <h2>Your Favorites Cards</h2>
             {favoritesCards.length === 0 ? (
                 <div className="no-favorites">
-                    <img src={DangerIcon} />
+                    <img src={DangerIcon} alt="no favorites icon" />
                     <p>No cards in favorites yet</p>
-                    <img src={DangerIcon} />
+                    <img src={DangerIcon} alt="no favorites icon" />
                 </div>
             ) : (
                 <div className="cards-list">

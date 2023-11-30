@@ -36,7 +36,7 @@ function CardDetails() {
                     <div>
                         <img
                         src={dividerImage}
-                        alt="divider image"
+                        alt="divider"
                         className="divider-image"
                         />
                     </div>

@@ -17,6 +17,7 @@ function Header() {
             <img
             src={magicLogo}
             className="magic-logo"
+            alt="Magic logo"
             />
             <div>
             <Link to={"/favorites"}>

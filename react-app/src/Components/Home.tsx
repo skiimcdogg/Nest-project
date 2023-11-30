@@ -5,6 +5,7 @@ import CardsList from './CardsList';
 import ExtensionType from '../../type';
 import CardType from '../../type';
 import CreateExtensionForm from './CreateExtensionForm';
+import noCards from '../assets/images/no-cards.png'
 
 function Home() {
     const [extensions, setExtensions] = useState<ExtensionType[]>([]);
@@ -61,7 +62,6 @@ function Home() {
         if(selectedExtension !== '') {
             fetchCards()
         }
-        
     }, [selectedExtension]);
 
     return (
@@ -79,7 +79,10 @@ function Home() {
                 <CreateExtensionForm />
             </div>
             {selectedExtension === "" ? 
-            <p>Please select an extension</p>
+            <img 
+            src={noCards}
+            alt="no cards"
+            />
             : !loading && <CardsList
                 cards={cards}
                 selectedExtension={selectedExtension}

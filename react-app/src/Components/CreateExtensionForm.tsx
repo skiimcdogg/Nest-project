@@ -54,7 +54,7 @@ function CreateExtensionForm() {
                 <input
                 type="text"
                 id="extension"
-                name="extension"
+                name="setName"
                 value={formFields.setName}
                 onChange={handleInputChange} 
                 />
@@ -63,6 +63,7 @@ function CreateExtensionForm() {
             </form>
             <p className="creation-infos">Some examples of extensions you can create (code and set name): </p>
             <p className="creation-infos">"neo": "Kamigawa: Neon Dynasty", "snc": "Streets of New Capenna", "vow": "Innistrad: Crimson Vow", "iko", "Ikoria: Lair of Behemoths", "sta": "Strixhaven Mystical Archive"</p>
+            <p>Please re-run the database script after adding a new extension !</p>
         </div>
     )
 };
