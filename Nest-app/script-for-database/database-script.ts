@@ -86,7 +86,9 @@ async function retrieveExtensionsCodesArray(dbConnection: mysql.Connection): Pro
   try {
     const selectAllExtensionsQuery = 'SELECT * FROM extensions';
     const results = await dbConnection.query(selectAllExtensionsQuery);
+
     console.log("Extensions retrieved successfully !");
+
     if(Array.isArray(results[0])) {
       return (results[0] as ExtensionRow[]).map(row => row.code);
     } else {
@@ -122,6 +124,7 @@ async function fetchCards(pageCards: number, extensionCode: string, apiCardsCall
 
 async function fillExtensionTable(dbConnection: mysql.Connection, extensionCardsList: MagicCardObject[]): Promise<void> {
   try {
+
     const insertSqlrequest = `
       INSERT INTO magic_cards (name, manaCost, colorIdentity, type, rarity, setName, text, flavor, power, toughness, imageUrl)
       VALUES ?
@@ -189,6 +192,9 @@ async function createAndConnectToContainerDB(): Promise<void> {
       const dbConnection = await createConnectionToDB();
       console.log("Database connection established.");
 
+      await dbConnection.query('TRUNCATE TABLE magic_cards');
+      console.log("Table cleared");
+      
       await FillExtensionsTable(dbConnection);
 
       const extensionsArray: string[] = await retrieveExtensionsCodesArray(dbConnection);
