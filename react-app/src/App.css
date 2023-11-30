@@ -179,3 +179,56 @@ body {
   font-style: italic;
   font-size: 20px;
 }
+
+/* .card-details-component {
+  display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+  margin-top: 10%;
+}
+
+.divider-image {
+  transform: rotate(90deg);
+}
+
+.card-details {
+  max-width: 30%;
+  display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: flex-start;
+} */
+
+.card-details-component {
+  margin-top: 10%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* Trois colonnes: contenu textuel, image de séparation, image de la carte */
+  align-items: center; /* Centre les éléments verticalement */
+  gap: 10px; /* Espacement entre les colonnes */
+  /* Ajoutez d'autres styles comme la marge, la largeur, etc., si nécessaire */
+}
+
+.card-details {
+  padding-left: 20%;
+  text-align: left;
+  word-break: break-word; /* Permet de casser les mots longs pour les garder dans le conteneur */
+  /* Pas besoin de définir une largeur maximale ici, car la grille contrôle la taille de la colonne */
+}
+
+.card-details p {
+  font-size: 22px;
+}
+
+.divider-image {
+  transform: rotate(90deg);
+}
+
+.card-detail-image {
+  width: 50%; /* Ou une autre taille appropriée */
+  padding-right: 20%;
+  height: auto;
+  /* Pas besoin de flex-shrink ici, car la grille contrôle la taille de la colonne */
+}
