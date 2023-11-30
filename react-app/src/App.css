@@ -134,6 +134,12 @@ body {
   font-size: 120%;
 }
 
+.cards-list-component {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .cards-list {
   display: flex;
 	flex-direction: row;

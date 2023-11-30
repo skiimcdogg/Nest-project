@@ -42,7 +42,15 @@ function Home() {
     const toggleFavorite = (cardId: number) => {
         axios.patch('http://localhost:3000/card-fetcher/favorite/' + cardId)
         .then(() => {
-            fetchCards();
+            setCards(cards.map(card => {
+                if(card.id === cardId) {
+                    return {
+                        ...card,
+                        favorite: !card.favorite
+                    };
+                }
+                return card;
+            }))
         })
         .catch(err => {
             console.error('Error during toggling favorite', err)
@@ -74,6 +82,7 @@ function Home() {
             <p>Please select an extension</p>
             : !loading && <CardsList
                 cards={cards}
+                selectedExtension={selectedExtension}
                 onToggleFavorite={toggleFavorite} 
                 />
             }
