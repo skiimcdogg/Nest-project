@@ -52,7 +52,7 @@ cd Nest-app
 npm install
 ```
 
-To properly configure the application, you need to set up environment variables. Create a `.env` file in the root of the /App-nest project and include the following settings if you didn't touch the docker run command:
+To properly configure the application, you need to set up environment variables. Create a `.env` file in the root of the /App-nest folder and include the following settings if you didn't touch the docker run command:
 
 ```plaintext
 DB_HOST="localhost"
@@ -78,6 +78,7 @@ npm start
 
 Go to the react-app and:
 ```bash
+npm install
 npm start
 ```
 
