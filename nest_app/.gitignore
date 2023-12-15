@@ -1,6 +1,7 @@
 # compiled output
 /dist
-/script-output
+script_output/*
+!script_output/.gitkeep
 /node_modules
 */node_modules
 */mysql-data
