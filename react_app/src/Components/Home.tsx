@@ -47,7 +47,7 @@ function Home() {
                 if(card.id === cardId) {
                     return {
                         ...card,
-                        favorite: !card.favorite
+                        isFavorite: !card.isFavorite
                     };
                 }
                 return card;

@@ -16,5 +16,5 @@ export default interface CardType {
     power: string;
     toughness: string;
     imageUrl: string;
-    favorite: boolean;
+    isFavorite: boolean;
 }

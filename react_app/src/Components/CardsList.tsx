@@ -25,8 +25,8 @@ function CardsList({ cards, selectedExtension, onToggleFavorite }: CardsListProp
                         <img
                         loading="lazy"
                         className="card-icon"
-                        src={card.favorite ? validateIcon : addIcon}
-                        alt={card.favorite ? 'Remove from favorites' : 'Add to favorites'}
+                        src={card.isFavorite ? validateIcon : addIcon}
+                        alt={card.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                         onClick={() => onToggleFavorite(card.id)}
                         />
                     </div>)

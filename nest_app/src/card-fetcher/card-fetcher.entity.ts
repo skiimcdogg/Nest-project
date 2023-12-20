@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { CardRarity } from './enums/card-rarity.enum';
 
 @Entity('cards')
 export class CardFetcher {
@@ -17,8 +18,12 @@ export class CardFetcher {
     @Column({ default: null })
     type: string;
 
-    @Column({ default: null })
-    rarity: string;
+    @Column({
+      type: 'enum',
+      enum: CardRarity,
+      default: null
+    })
+    rarity: CardRarity;
 
     @Column({ default: null })
     setName: string;
@@ -43,6 +48,5 @@ export class CardFetcher {
         width: 1,
         default: 0,
       })
-      favorite: boolean;
-
+      isFavorite: boolean;
 }

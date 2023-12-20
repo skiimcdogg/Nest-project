@@ -15,7 +15,7 @@ export class CardFetcherService {
   }
 
   findAllFavorites(): Promise<CardFetcher[]> {
-    return this.cardFetcherRepository.findBy({ favorite: true })
+    return this.cardFetcherRepository.findBy({ isFavorite: true })
   }
 
   findManyWithExtensionName(setNameValue: string): Promise<CardFetcher[]> {
@@ -38,7 +38,7 @@ export class CardFetcherService {
     if(!card) {
       throw new NotFoundException(`Card with ID ${id} not found.`)
     }
-    card.favorite = !card.favorite;
+    card.isFavorite = !card.isFavorite;
     await this.cardFetcherRepository.save(card);
     return card
   }

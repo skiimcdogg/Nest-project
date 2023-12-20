@@ -1,7 +1,6 @@
 import { Controller, Get, Patch, Delete, Param, HttpCode, NotFoundException } from '@nestjs/common';
 import { CardFetcherService } from './card-fetcher.service';
 import { CardFetcher } from './card-fetcher.entity';
-import { log } from 'console';
 
 @Controller('cards')
 export class CardFetcherController {
