@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Param, HttpCode } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Param, HttpCode, NotFoundException } from '@nestjs/common';
 import { CardFetcherService } from './card-fetcher.service';
 import { CardFetcher } from './card-fetcher.entity';
 import { log } from 'console';
@@ -18,8 +18,8 @@ export class CardFetcherController {
     }
 
     @Get(':id')
-    getOneCards(@Param('id') id: number): Promise<CardFetcher | null> {
-        return this.cardFetcherService.findOne(id);
+    getOneCards(@Param('id') id: number): Promise<CardFetcher> {
+       return this.cardFetcherService.findOne(id);
     }
 
     @Get('sets/:setName')
@@ -28,10 +28,9 @@ export class CardFetcherController {
     }
 
     @Patch('favorites/:id')
-    async toggleFavoriteStatus(@Param('id') id: number): Promise<string> {
-        const isFavorite = await this.cardFetcherService.toggleFavoriteStatus(id);
-        const responseString = isFavorite ? `Card with ID ${id} set into favorites` : `Card with ID ${id} removed from favorites`;
-        return responseString;
+    async toggleFavoriteStatus(@Param('id') id: number): Promise<CardFetcher> {
+        const card = await this.cardFetcherService.toggleFavoriteStatus(id);
+        return card;
     }
 
     @Delete(':id')

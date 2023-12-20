@@ -25,18 +25,22 @@ export class CardFetcherService {
   })
   }
 
-  findOne(id: number): Promise<CardFetcher | null> {
-    return this.cardFetcherRepository.findOneBy({ id });
+  async findOne(id: number): Promise<CardFetcher> {
+    const card = await this.cardFetcherRepository.findOneBy({ id });
+    if(!card) {
+      throw new NotFoundException(`Card with ID ${id} not found.`)
+    }
+    return card
   }
 
-  async toggleFavoriteStatus(id: number): Promise<boolean> {
+  async toggleFavoriteStatus(id: number): Promise<CardFetcher> {
     const card = await this.cardFetcherRepository.findOneBy({ id })
     if(!card) {
       throw new NotFoundException(`Card with ID ${id} not found.`)
     }
     card.favorite = !card.favorite;
     await this.cardFetcherRepository.save(card);
-    return card.favorite
+    return card
   }
 
   async remove(id: number): Promise<void> {

@@ -13,14 +13,14 @@ export class ExtensionsController {
     }
 
     @Get(':id')
-    getOneExtensions(@Param('id') id: number): Promise<Extensions | null> {
+    getOneExtensions(@Param('id') id: number): Promise<Extensions> {
         return this.extensionsService.findOne(id);
     }
 
     @Post('/')
-    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {          
-        await this.extensionsService.createExtension(createExtensionDto)
-        return `Extensions ${createExtensionDto["setName"]} created successfully.`
+    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<Extensions> {          
+        const newExtension = await this.extensionsService.createExtension(createExtensionDto)
+        return newExtension
     }
 
     @Delete(':id')
