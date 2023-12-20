@@ -17,10 +17,8 @@ export class ExtensionsController {
         return this.extensionsService.findOne(id);
     }
 
-    @Post('create')
-    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {
-        console.log("DTO", createExtensionDto);
-          
+    @Post('/')
+    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {          
         await this.extensionsService.createExtension(createExtensionDto)
         return `Extensions ${createExtensionDto["setName"]} created successfully.`
     }

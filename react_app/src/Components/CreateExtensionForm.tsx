@@ -28,7 +28,7 @@ function CreateExtensionForm() {
             return;
         }
 
-        axios.post('http://localhost:3000/extensions/create', formFields)
+        axios.post('http://localhost:3000/extensions/', formFields)
             .then(response => {
                 console.log(response.data);
             })

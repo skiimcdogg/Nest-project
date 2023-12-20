@@ -74,7 +74,6 @@ function Home() {
             <button className="button-creation-form" onClick={() => setShowCreateExtensionForm(prev => !prev)}>
                 {showCreateExtensionForm ? "Hide Creation Form" : "Show Creation Form"}
             </button>
-            {/* {showCreateExtensionForm && <CreateExtensionForm />} */}
             <div className={`creation-form-component ${showCreateExtensionForm ? 'visible' : ''}`}>
                 <CreateExtensionForm />
             </div>
