@@ -12,7 +12,7 @@ function CardDetails() {
     
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/card-fetcher/${cardId}`)
+        axios.get(`http://localhost:3000/cards/${cardId}`)
             .then(response => {
                 setCard(response.data) 
             })

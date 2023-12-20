@@ -16,7 +16,7 @@ function Home() {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('http://localhost:3000/extensions/all')
+        axios.get('http://localhost:3000/extensions')
             .then(response => {
                 setExtensions(response.data) 
                 setLoading(false);
@@ -29,7 +29,7 @@ function Home() {
 
     const fetchCards = () => {
         setLoading(true);
-        axios.get('http://localhost:3000/card-fetcher/extension/' + selectedExtension)
+        axios.get('http://localhost:3000/cards/sets/' + selectedExtension)
             .then(response => {
                 setCards(response.data) 
                 setLoading(false);
@@ -41,7 +41,7 @@ function Home() {
     };
 
     const toggleFavorite = (cardId: number) => {
-        axios.patch('http://localhost:3000/card-fetcher/favorite/' + cardId)
+        axios.patch('http://localhost:3000/cards/favorites/' + cardId)
         .then(() => {
             setCards(cards.map(card => {
                 if(card.id === cardId) {

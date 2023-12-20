@@ -10,7 +10,7 @@ function FavoritesCardsList() {
     const [loading, setLoading] = useState<boolean>(true)
 
     const fetchFavoritesCards = () => {
-        axios.get('http://localhost:3000/card-fetcher/favorites')
+        axios.get('http://localhost:3000/cards/favorites')
             .then(response => {
                 setFavoritesCards(response.data)
                 setLoading(false)
@@ -22,7 +22,7 @@ function FavoritesCardsList() {
     }
 
     const removeFromFavorites = (cardId: number) => {
-        axios.patch('http://localhost:3000/card-fetcher/favorite/' + cardId)
+        axios.patch('http://localhost:3000/cards/favorites/' + cardId)
         .then(() => {
             fetchFavoritesCards();
         })
