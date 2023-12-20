@@ -21,7 +21,8 @@ export class CardFetcher {
     @Column({
       type: 'enum',
       enum: CardRarity,
-      default: null
+      default: null,
+      readonly: true
     })
     rarity: CardRarity;
 
