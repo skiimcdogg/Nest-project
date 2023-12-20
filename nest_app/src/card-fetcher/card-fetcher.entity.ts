@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 
-@Entity('magic_cards')
+@Entity('cards')
 export class CardFetcher {
     @PrimaryGeneratedColumn()
     id: number;

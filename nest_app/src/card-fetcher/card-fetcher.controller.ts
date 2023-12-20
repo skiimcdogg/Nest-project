@@ -1,13 +1,14 @@
 import { Controller, Get, Patch, Delete, Param, HttpCode } from '@nestjs/common';
 import { CardFetcherService } from './card-fetcher.service';
 import { CardFetcher } from './card-fetcher.entity';
+import { log } from 'console';
 
-@Controller('card-fetcher')
+@Controller('cards')
 export class CardFetcherController {
     constructor(private readonly cardFetcherService: CardFetcherService) {}
 
-    @Get('cards')
-    getAllCards(): Promise<CardFetcher[]> {
+    @Get('/')
+    getAllCards(): Promise<CardFetcher[]> {        
         return this.cardFetcherService.findAll();
     }
 
@@ -21,14 +22,14 @@ export class CardFetcherController {
         return this.cardFetcherService.findOne(id);
     }
 
-    @Get('extension/:setName')
+    @Get('sets/:setName')
     getManyCardsFromOneExtension(@Param('setName') setName: string): Promise<CardFetcher[]> {
         return this.cardFetcherService.findManyWithExtensionName(setName);
     }
 
-    @Patch('/favorite/:id')
-    async setFavoriteStatus(@Param('id') id: number): Promise<string> {
-        const isFavorite = await this.cardFetcherService.updateFavoriteStatus(id);
+    @Patch('favorites/:id')
+    async toggleFavoriteStatus(@Param('id') id: number): Promise<string> {
+        const isFavorite = await this.cardFetcherService.toggleFavoriteStatus(id);
         const responseString = isFavorite ? `Card with ID ${id} set into favorites` : `Card with ID ${id} removed from favorites`;
         return responseString;
     }

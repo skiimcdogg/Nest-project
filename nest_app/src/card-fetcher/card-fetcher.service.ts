@@ -29,7 +29,7 @@ export class CardFetcherService {
     return this.cardFetcherRepository.findOneBy({ id });
   }
 
-  async updateFavoriteStatus(id: number): Promise<boolean> {
+  async toggleFavoriteStatus(id: number): Promise<boolean> {
     const card = await this.cardFetcherRepository.findOneBy({ id })
     if(!card) {
       throw new NotFoundException(`Card with ID ${id} not found.`)

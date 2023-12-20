@@ -42,11 +42,11 @@ interface MagicCardObject {
 
 async function createConnectionToDB(): Promise<mysql.Connection> {
     const connection = await mysql.createConnection({
-      host: '127.0.0.1',
+      host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: 'magic_extensions',
-      port: 3306,
+      database: process.env.DB_NAME,
+      port: Number(process.env.DB_PORT),
     } as mysql.ConnectionOptions);
 
       console.log('Connected to the DB !');
@@ -126,7 +126,7 @@ async function fillExtensionTable(dbConnection: mysql.Connection, extensionCards
   try {
 
     const insertSqlrequest = `
-      INSERT INTO magic_cards (name, manaCost, colorIdentity, type, rarity, setName, text, flavor, power, toughness, imageUrl)
+      INSERT INTO cards (name, manaCost, colorIdentity, type, rarity, setName, text, flavor, power, toughness, imageUrl)
       VALUES ?
     `;
 
@@ -192,7 +192,7 @@ async function createAndConnectToContainerDB(): Promise<void> {
       const dbConnection = await createConnectionToDB();
       console.log("Database connection established.");
 
-      await dbConnection.query('TRUNCATE TABLE magic_cards');
+      await dbConnection.query('TRUNCATE TABLE cards');
       console.log("Table cleared");
       
       await FillExtensionsTable(dbConnection);

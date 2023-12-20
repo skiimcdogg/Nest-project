@@ -7,7 +7,7 @@ import { CreateExtensionsDto } from './extensions-dtos/create-extensions-dto';
 export class ExtensionsController {
     constructor(private readonly extensionsService: ExtensionsService) {}
 
-    @Get('all')
+    @Get('/')
     getAllExtensions(): Promise<Extensions[]> {
         return this.extensionsService.findAll();
     }
@@ -18,7 +18,9 @@ export class ExtensionsController {
     }
 
     @Post('create')
-    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {        
+    async CreateOneExtension(@Body(ValidationPipe) createExtensionDto: CreateExtensionsDto): Promise<string> {
+        console.log("DTO", createExtensionDto);
+          
         await this.extensionsService.createExtension(createExtensionDto)
         return `Extensions ${createExtensionDto["setName"]} created successfully.`
     }
