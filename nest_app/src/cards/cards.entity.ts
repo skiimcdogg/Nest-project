@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { CardRarity } from './enums/card-rarity.enum';
-import { Extensions } from './../extensions/extensions.entity';
+import { Extensions } from '../extensions/extensions.entity';
 
 @Entity('cards')
-export class CardFetcher {
+export class Cards {
     @PrimaryGeneratedColumn()
     id: number;
 

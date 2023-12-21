@@ -1,31 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CardFetcher } from './card-fetcher.entity';
+import { Cards } from './cards.entity';
 
 @Injectable()
 export class CardFetcherService {
   constructor(
-    @InjectRepository(CardFetcher)
-    private cardFetcherRepository: Repository<CardFetcher>,
+    @InjectRepository(Cards)
+    private cardFetcherRepository: Repository<Cards>,
   ) {}
 
-  findAll(): Promise<CardFetcher[]> {
+  findAll(): Promise<Cards[]> {
     return this.cardFetcherRepository.find();
   }
 
-  findAllFavorites(): Promise<CardFetcher[]> {
+  findAllFavorites(): Promise<Cards[]> {
     return this.cardFetcherRepository.findBy({ isFavorite: true })
   }
 
-  findManyWithExtensionName(setExtensionName: string): Promise<CardFetcher[]> {
+  findManyWithExtensionName(setExtensionName: string): Promise<Cards[]> {
     return this.cardFetcherRepository.find({ where: {
       extensionName: setExtensionName
     },
   })
   }
 
-  async findOne(id: number): Promise<CardFetcher> {
+  async findOne(id: number): Promise<Cards> {
     const card = await this.cardFetcherRepository.findOneBy({ id });
     if(!card) {
       throw new NotFoundException(`Card with ID ${id} not found.`)
@@ -33,7 +33,7 @@ export class CardFetcherService {
     return card
   }
 
-  async toggleFavoriteStatus(id: number): Promise<CardFetcher> {
+  async toggleFavoriteStatus(id: number): Promise<Cards> {
     const card = await this.cardFetcherRepository.findOneBy({ id })
     if(!card) {
       throw new NotFoundException(`Card with ID ${id} not found.`)

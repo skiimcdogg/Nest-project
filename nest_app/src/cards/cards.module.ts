@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CardFetcherService } from './card-fetcher.service';
-import { CardFetcherController } from './card-fetcher.controller';
-import { CardFetcher } from './card-fetcher.entity';
+import { CardFetcherService } from './cards.service';
+import { CardFetcherController } from './cards.controller';
+import { Cards } from './cards.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CardFetcher])],
+  imports: [TypeOrmModule.forFeature([Cards])],
   exports: [TypeOrmModule],
   providers: [CardFetcherService],
   controllers: [CardFetcherController],

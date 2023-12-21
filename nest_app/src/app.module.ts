@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CardFetcherModule } from './card-fetcher/card-fetcher.module';
+import { CardFetcherModule } from './cards/cards.module';
 import { ExtensionsModule } from './extensions/extensions.module';
 import * as dotenv from 'dotenv';
-import { Extensions } from './extensions/extensions.entity';
-import { CardFetcher } from './card-fetcher/card-fetcher.entity';
 
 dotenv.config({ path: "./.env"});
 

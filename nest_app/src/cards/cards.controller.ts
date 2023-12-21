@@ -1,33 +1,33 @@
 import { Controller, Get, Patch, Delete, Param, HttpCode, NotFoundException } from '@nestjs/common';
-import { CardFetcherService } from './card-fetcher.service';
-import { CardFetcher } from './card-fetcher.entity';
+import { CardFetcherService } from './cards.service';
+import { Cards } from './cards.entity';
 
 @Controller('cards')
 export class CardFetcherController {
     constructor(private readonly cardFetcherService: CardFetcherService) {}
 
     @Get('/')
-    getAllCards(): Promise<CardFetcher[]> {        
+    getAllCards(): Promise<Cards[]> {        
         return this.cardFetcherService.findAll();
     }
 
     @Get('favorites')
-    getAllFavoritesCards(): Promise<CardFetcher[]> {
+    getAllFavoritesCards(): Promise<Cards[]> {
         return this.cardFetcherService.findAllFavorites();
     }
 
     @Get(':id')
-    getOneCards(@Param('id') id: number): Promise<CardFetcher> {
+    getOneCards(@Param('id') id: number): Promise<Cards> {
        return this.cardFetcherService.findOne(id);
     }
 
     @Get('extensions/:extensionName')
-    getManyCardsFromOneExtension(@Param('extensionName') extensionName: string): Promise<CardFetcher[]> {
+    getManyCardsFromOneExtension(@Param('extensionName') extensionName: string): Promise<Cards[]> {
         return this.cardFetcherService.findManyWithExtensionName(extensionName);
     }
 
     @Patch('favorites/:id')
-    async toggleFavoriteStatus(@Param('id') id: number): Promise<CardFetcher> {
+    async toggleFavoriteStatus(@Param('id') id: number): Promise<Cards> {
         const card = await this.cardFetcherService.toggleFavoriteStatus(id);
         return card;
     }
