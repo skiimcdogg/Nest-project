@@ -21,9 +21,9 @@ export class CardFetcherController {
        return this.cardFetcherService.findOne(id);
     }
 
-    @Get('sets/:setName')
-    getManyCardsFromOneExtension(@Param('setName') setName: string): Promise<CardFetcher[]> {
-        return this.cardFetcherService.findManyWithExtensionName(setName);
+    @Get('extensions/:extensionName')
+    getManyCardsFromOneExtension(@Param('extensionName') extensionName: string): Promise<CardFetcher[]> {
+        return this.cardFetcherService.findManyWithExtensionName(extensionName);
     }
 
     @Patch('favorites/:id')

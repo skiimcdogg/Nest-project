@@ -18,9 +18,9 @@ export class CardFetcherService {
     return this.cardFetcherRepository.findBy({ isFavorite: true })
   }
 
-  findManyWithExtensionName(setNameValue: string): Promise<CardFetcher[]> {
+  findManyWithExtensionName(setExtensionName: string): Promise<CardFetcher[]> {
     return this.cardFetcherRepository.find({ where: {
-      setName: setNameValue
+      extensionName: setExtensionName
     },
   })
   }

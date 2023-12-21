@@ -28,7 +28,7 @@ function CardDetails() {
                     <div className="card-details">
                         <h2>{card.name}</h2>
                         <p>Type: {card.type}</p>
-                        <p>Set Name: {card.setName}</p>
+                        <p>Set Name: {card.extensionName}</p>
                         <p>Text: {card.text}</p>
                         <p>Power/Toughness: {card.power}/{card.toughness}</p>
                         <p>Flavor: <i>{card.flavor}</i></p>

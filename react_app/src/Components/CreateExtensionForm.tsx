@@ -3,13 +3,13 @@ import axios from 'axios';
 
 type CreateExtensionFormState = {
     code: string;
-    setName: string;
+    extensionName: string;
 }
 
 function CreateExtensionForm() {
     const [formFields, setFormFields] = useState<CreateExtensionFormState>({
         code: '',
-        setName: ''
+        extensionName: ''
     })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ function CreateExtensionForm() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if(formFields.code.trim() === '' || formFields.setName.trim() === '') {
+        if(formFields.code.trim() === '' || formFields.extensionName.trim() === '') {
             alert('Please fill out all the fields')
             return;
         }
@@ -36,7 +36,7 @@ function CreateExtensionForm() {
                 console.error('Error during creation process', error)
             });
 
-        setFormFields({ code: '', setName: ''})
+        setFormFields({ code: '', extensionName: ''})
     };
 
     return (
@@ -54,8 +54,8 @@ function CreateExtensionForm() {
                 <input
                 type="text"
                 id="extension"
-                name="setName"
-                value={formFields.setName}
+                name="extensionName"
+                value={formFields.extensionName}
                 onChange={handleInputChange} 
                 />
 

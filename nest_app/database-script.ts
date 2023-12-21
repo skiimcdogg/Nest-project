@@ -70,7 +70,7 @@ async function FillExtensionsTable(dbConnection: mysql.Connection): Promise<void
     }
 
     const insertDataQuery = `
-      INSERT INTO extensions (code, setName)
+      INSERT INTO extensions (code, extensionName)
       VALUES ('khm', 'kaldheim'), ('afr', 'Adventures in the Forgotten Realms'), ('znr', 'Zendikar Rising'), ('eld', 'Throne of Eldraine')
     `;
 
@@ -126,7 +126,7 @@ async function fillExtensionTable(dbConnection: mysql.Connection, extensionCards
   try {
 
     const insertSqlrequest = `
-      INSERT INTO cards (name, manaCost, colorIdentity, type, rarity, setName, text, flavor, power, toughness, imageUrl)
+      INSERT INTO cards (name, manaCost, colorIdentity, type, rarity, extensionName, text, flavor, power, toughness, imageUrl)
       VALUES ?
     `;
 

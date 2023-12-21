@@ -10,9 +10,9 @@ type ExtensionsFilterProps = {
 function ExtensionsFilter({extensions, selectedExtension, setSelectedExtension}: ExtensionsFilterProps) {
 
     const handleExtensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const extensionSelected = extensions.find(extension => extension.setName === event.target.value)
+        const extensionSelected = extensions.find(extension => extension.extensionName === event.target.value)
         if(extensionSelected) {
-            setSelectedExtension(extensionSelected.setName)
+            setSelectedExtension(extensionSelected.extensionName)
         } else {
             setSelectedExtension('')
         }
@@ -23,8 +23,8 @@ function ExtensionsFilter({extensions, selectedExtension, setSelectedExtension}:
             <select className="select-extension" value={selectedExtension} onChange={handleExtensionChange}>
                 <option value="">Please select an extension</option>
                 {extensions.map((extension) => (
-                    <option key={extension.code} value={extension.setName}>
-                        {extension.setName}
+                    <option key={extension.code} value={extension.extensionName}>
+                        {extension.extensionName}
                     </option>
                 ))}
             </select>

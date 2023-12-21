@@ -7,5 +7,5 @@ export class CreateExtensionsDto {
 
     @IsString()
     @IsNotEmpty()
-    setName: string
+    extensionName: string
 }

@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { CardRarity } from './enums/card-rarity.enum';
+import { Extensions } from './../extensions/extensions.entity';
 
 @Entity('cards')
 export class CardFetcher {
@@ -17,7 +18,7 @@ export class CardFetcher {
 
     @Column({ default: null })
     type: string;
-
+    
     @Column({
       type: 'enum',
       enum: CardRarity,
@@ -25,10 +26,10 @@ export class CardFetcher {
       readonly: true
     })
     rarity: CardRarity;
-
+    
     @Column({ default: null })
-    setName: string;
-
+    extensionName: string;
+    
     @Column({ type: 'longtext', default: null })
     text: string;
 
@@ -50,4 +51,7 @@ export class CardFetcher {
         default: 0,
       })
       isFavorite: boolean;
+
+    @ManyToOne(() => Extensions, (extension) => extension.cards)
+    extension: Extensions;
 }

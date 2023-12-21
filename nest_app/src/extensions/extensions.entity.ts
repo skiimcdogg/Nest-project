@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { CardFetcher } from './../card-fetcher/card-fetcher.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('extensions')
 export class Extensions {
@@ -9,6 +10,8 @@ export class Extensions {
     code: string;
 
     @Column({ default: null })
-    setName: string;
+    extensionName: string;
 
+    @OneToMany(() => CardFetcher, card => card.extension)
+    cards: CardFetcher[];
 }

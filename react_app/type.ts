@@ -1,6 +1,6 @@
 export default interface ExtensionType {
     code: string;
-    setName: string;
+    extensionName: string;
 }
 
 export default interface CardType {
@@ -10,7 +10,7 @@ export default interface CardType {
     colorIdentity: string[];
     type: string;
     rarity: string;
-    setName: string;
+    extensionName: string;
     text: string;
     flavor: string;
     power: string;
