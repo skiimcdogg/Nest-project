@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CardType from '../../type';
+import CardType from '../type';
 import addIcon from '../assets/images/add-logo.svg';
 import validateIcon from '../assets/images/done-logo.svg';
 

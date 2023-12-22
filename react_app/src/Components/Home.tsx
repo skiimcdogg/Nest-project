@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ExtensionsFilter from './ExtensionsFilter';
 import CardsList from './CardsList';
-import ExtensionType from '../../type';
-import CardType from '../../type';
+import ExtensionType from '../type';
+import CardType from '../type';
 import CreateExtensionForm from './CreateExtensionForm';
 import noCards from '../assets/images/no-cards.png'
 

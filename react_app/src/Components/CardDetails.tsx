@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import CardType from '../../type';
+import CardType from '../type';
 import dividerImage from '../assets/images/divider-img.svg'
 
 function CardDetails() {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-import CardType from '../../type';
+import CardType from '../type';
 import DeleteIcon from '../assets/images/delete-logo.svg';
 import DangerIcon from '../assets/images/danger-logo.svg';
 

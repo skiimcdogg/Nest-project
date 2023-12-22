@@ -1,5 +1,5 @@
 import React from 'react';
-import ExtensionType from '../../type';
+import ExtensionType from '../type';
 
 type ExtensionsFilterProps = {
     extensions: ExtensionType[];
