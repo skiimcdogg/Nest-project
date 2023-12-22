@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import magicLogo from '../assets/images/Magicthegathering-logo.svg.png'
-import favoriteLogo from '../assets/images/favorite-logo.svg'
-import homeLogo from '../assets/images/home-logo.svg'
+import magicLogo from '../../assets/images/Magicthegathering-logo.svg.png'
+import favoriteLogo from '../../assets/images/favorite-logo.svg'
+import homeLogo from '../../assets/images/home-logo.svg'
 
 function Header() {
     return (

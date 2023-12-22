@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ExtensionsFilter from './ExtensionsFilter';
-import CardsList from './CardsList';
-import ExtensionType from '../type';
-import CardType from '../type';
-import CreateExtensionForm from './CreateExtensionForm';
-import noCards from '../assets/images/no-cards.png'
+import ExtensionsFilter from '../extensions-filter/ExtensionsFilter';
+import CardsList from '../cards-list/CardsList';
+import ExtensionType from '../../type';
+import CardType from '../../type';
+import CreateExtensionForm from '../create-extension-form/CreateExtensionForm';
+import noCards from '../../assets/images/no-cards.png'
 
 function Home() {
     const [extensions, setExtensions] = useState<ExtensionType[]>([]);

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css';
-import Home from './Components/Home';
-import Header from './Components/Header';
-import CardDetails from './Components/CardDetails';
-import FavoritesCardsList from './Components/FavoritesCardsList';
+import Home from './Components/home/Home';
+import Header from './Components/header/Header';
+import CardDetails from './Components/card-details/CardDetails';
+import FavoritesCardsList from './Components/favorites-cards-list/FavoritesCardsList';
 
 function App() {
   return (
