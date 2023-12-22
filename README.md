@@ -77,6 +77,15 @@ npm start
 ```
 
 Go to the react-app and:
+
+create an .env file for setting the url of the back-end:
+
+```plaintext
+BACKEND_URL="http://localhost:3000"
+```
+
+and, finally:
+
 ```bash
 npm install
 npm start
