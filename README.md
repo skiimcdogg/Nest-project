@@ -59,7 +59,7 @@ DB_HOST="localhost"
 DB_NAME="magic_extensions"
 DB_USER="root"
 DB_PASSWORD="root"
-DB_PORT="3306"
+DB_PORT="3307"
 ```
 
 and then, you'll have to generate, run the migrations and run the script for filling the DB:
