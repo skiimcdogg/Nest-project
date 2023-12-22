@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import './CreateExtensionForm.css';
 
 type CreateExtensionFormState = {
     code: string;
@@ -40,8 +41,8 @@ function CreateExtensionForm() {
     };
 
     return (
-        <div>
-            <form className="creation-form" onSubmit={handleSubmit}>
+        <div className="creation-form">
+            <form className="creation-form__form" onSubmit={handleSubmit}>
                 <label htmlFor="code">Code</label>
                 <input
                 type="text"
@@ -61,8 +62,8 @@ function CreateExtensionForm() {
 
                 <button type="submit">Create Extension</button>
             </form>
-            <p className="creation-infos">Some examples of extensions you can create (code and set name): </p>
-            <p className="creation-infos">"neo": "Kamigawa: Neon Dynasty", "snc": "Streets of New Capenna", "vow": "Innistrad: Crimson Vow", "iko", "Ikoria: Lair of Behemoths", "sta": "Strixhaven Mystical Archive"</p>
+            <p className="creation-form__infos">Some examples of extensions you can create (code and set name): </p>
+            <p className="creation-form__infos">"neo": "Kamigawa: Neon Dynasty", "snc": "Streets of New Capenna", "vow": "Innistrad: Crimson Vow", "iko", "Ikoria: Lair of Behemoths", "sta": "Strixhaven Mystical Archive"</p>
             <p>Please re-run the database script after adding a new extension !</p>
         </div>
     )

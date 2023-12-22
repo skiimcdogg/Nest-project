@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import CardType from '../../type';
 import DeleteIcon from '../../assets/images/delete-logo.svg';
 import DangerIcon from '../../assets/images/danger-logo.svg';
+import './FavoritesCardsList.css';
 
 function FavoritesCardsList() {
     const [favoritesCards, setFavoritesCards] = useState<CardType[]>([])
@@ -36,24 +37,24 @@ function FavoritesCardsList() {
     }, [])
 
     return (
-        <div>
+        <div className="favorites-cards-list">
             <h2>Your Favorites Cards</h2>
             {favoritesCards.length === 0 ? (
-                <div className="no-favorites">
+                <div className="favorites-cards-list__no-favorites-container">
                     <img src={DangerIcon} alt="no favorites icon" />
                     <p>No cards in favorites yet</p>
                     <img src={DangerIcon} alt="no favorites icon" />
                 </div>
             ) : (
-                <div className="cards-list">
+                <div className="favorites-cards-list__container">
                 {!loading ? (
                     favoritesCards.map(card => (
                         <div key={card.id}>
                             <Link to={`/card/${card.id}`}>
-                                <img className="card-in-list" src={card.imageUrl} alt={card.name}/>
+                                <img className="favorites-cards-list__card-image" src={card.imageUrl} alt={card.name}/>
                             </Link>
                             <img
-                            className="card-icon"
+                            className="favorites-cards-list__icon--delete-favorite"
                             src={DeleteIcon}
                             alt="Delete logo"
                             onClick={() => removeFromFavorites(card.id)}

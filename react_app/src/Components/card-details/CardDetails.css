@@ -1,0 +1,27 @@
+.card-details__container {
+  margin-top: 10%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-details__info {
+  padding-left: 20%;
+  text-align: left;
+  word-break: break-word;
+}
+
+.card-details__info p {
+  font-size: 22px;
+}
+
+.card-details__divider-image {
+  transform: rotate(90deg);
+}
+
+.card-details__card-image {
+  width: 50%;
+  padding-right: 20%;
+  height: auto;
+}

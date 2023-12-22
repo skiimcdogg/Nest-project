@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CardType from '../../type';
-import dividerImage from '../../assets/images/divider-img.svg'
+import dividerImage from '../../assets/images/divider-img.svg';
+import './CardDetails.css';
 
 function CardDetails() {
     let cardId = useParams().id
-    const [card, setCard] = useState<CardType | null>(null)
-
-    console.log(cardId);
-    
+    const [card, setCard] = useState<CardType | null>(null)    
 
     useEffect(() => {
         axios.get(`http://localhost:3000/cards/${cardId}`)
@@ -22,10 +20,10 @@ function CardDetails() {
     })
     
     return (
-        <div>
+        <div className="card-details">
             {card ? (
-                <div className="card-details-component">
-                    <div className="card-details">
+                <div className="card-details__container">
+                    <div className="card-details__info">
                         <h2>{card.name}</h2>
                         <p>Type: {card.type}</p>
                         <p>Set Name: {card.extensionName}</p>
@@ -37,11 +35,11 @@ function CardDetails() {
                         <img
                         src={dividerImage}
                         alt="divider"
-                        className="divider-image"
+                        className="card-details__divider-image"
                         />
                     </div>
                     <div>
-                        <img className="card-detail-image" src={card.imageUrl} alt={card.name}/>
+                        <img className="card-details__card-image" src={card.imageUrl} alt={card.name}/>
                     </div>
                 </div>
             ) : (

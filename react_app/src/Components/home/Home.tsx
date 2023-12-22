@@ -5,7 +5,8 @@ import CardsList from '../cards-list/CardsList';
 import ExtensionType from '../../type';
 import CardType from '../../type';
 import CreateExtensionForm from '../create-extension-form/CreateExtensionForm';
-import noCards from '../../assets/images/no-cards.png'
+import noCards from '../../assets/images/no-cards.png';
+import './Home.css';
 
 function Home() {
     const [extensions, setExtensions] = useState<ExtensionType[]>([]);
@@ -29,7 +30,7 @@ function Home() {
 
     const fetchCards = () => {
         setLoading(true);
-        axios.get('http://localhost:3000/cards/sets/' + selectedExtension)
+        axios.get('http://localhost:3000/cards/extensions/' + selectedExtension)
             .then(response => {
                 setCards(response.data) 
                 setLoading(false);
@@ -65,16 +66,16 @@ function Home() {
     }, [selectedExtension]);
 
     return (
-        <div>
+        <div className="home">
             <ExtensionsFilter 
             extensions={extensions}
             selectedExtension={selectedExtension}
             setSelectedExtension={setSelectedExtension}
             />
-            <button className="button-creation-form" onClick={() => setShowCreateExtensionForm(prev => !prev)}>
+            <button className="home__button--show-form" onClick={() => setShowCreateExtensionForm(prev => !prev)}>
                 {showCreateExtensionForm ? "Hide Creation Form" : "Show Creation Form"}
             </button>
-            <div className={`creation-form-component ${showCreateExtensionForm ? 'visible' : ''}`}>
+            <div className={`home__creation-form-component ${showCreateExtensionForm ? 'visible' : ''}`}>
                 <CreateExtensionForm />
             </div>
             {selectedExtension === "" ? 

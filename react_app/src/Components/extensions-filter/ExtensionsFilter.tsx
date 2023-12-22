@@ -1,5 +1,6 @@
 import React from 'react';
 import ExtensionType from '../../type';
+import './ExtensionsFilter.css';
 
 type ExtensionsFilterProps = {
     extensions: ExtensionType[];
@@ -19,8 +20,8 @@ function ExtensionsFilter({extensions, selectedExtension, setSelectedExtension}:
     };
 
     return (
-        <div>
-            <select className="select-extension" value={selectedExtension} onChange={handleExtensionChange}>
+        <div className="extension-selector">
+            <select className="extension-selector__dropdown" value={selectedExtension} onChange={handleExtensionChange}>
                 <option value="">Please select an extension</option>
                 {extensions.map((extension) => (
                     <option key={extension.code} value={extension.extensionName}>

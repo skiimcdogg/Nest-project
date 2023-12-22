@@ -1,0 +1,27 @@
+.extension-selector__dropdown {
+  margin: 1%;
+  padding: 0.3%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 20px;
+  color: #444;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  background-image: url("./../../assets/images/dropdown-arrow.svg");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+}
+
+.extension-selector__dropdown:hover {
+  border-color: #bbb;
+}
+
+.extension-selector__dropdown:focus {
+  border-color: #888;
+}
