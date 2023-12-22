@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Extensions } from './extensions.entity';
-import { CreateUpdateExtensionsDto } from './extensions-dtos/create-update-extensions-dto';
+import { CreateExtensionsDto } from './extensions-dtos/create-extensions-dto';
+import { UpdateExtensionsDto } from './extensions-dtos/update-extensions-dto';
 
 @Injectable()
 export class ExtensionsService {
@@ -23,13 +24,13 @@ export class ExtensionsService {
     return extension
   }
 
-  async createExtension(createUpdateExtensionsDto: CreateUpdateExtensionsDto): Promise<Extensions> {
+  async createExtension(createUpdateExtensionsDto: CreateExtensionsDto): Promise<Extensions> {
     const newExtension = this.extensionsRepository.create(createUpdateExtensionsDto)
     await this.extensionsRepository.save(newExtension)
     return newExtension
   }
 
-  async updateExtension(id: number, createUpdateExtensionsDto: CreateUpdateExtensionsDto): Promise<Extensions> {
+  async updateExtension(id: number, createUpdateExtensionsDto: UpdateExtensionsDto): Promise<Extensions> {
     const extension = await this.extensionsRepository.findOneBy({ id })
     if(!extension) {
       throw new NotFoundException(`Extension with ID ${id} not found.`)

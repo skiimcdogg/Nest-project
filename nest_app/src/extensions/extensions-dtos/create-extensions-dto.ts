@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class CreateUpdateExtensionsDto {
+export class CreateExtensionsDto {
     @IsString()
     @IsNotEmpty()
     code: string
