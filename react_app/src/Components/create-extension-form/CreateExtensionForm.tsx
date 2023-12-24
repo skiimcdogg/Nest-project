@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./CreateExtensionForm.css";
+import apiHandler from "../../services/apiHandler";
 
 type CreateExtensionFormState = {
   code: string;
@@ -32,10 +32,10 @@ function CreateExtensionForm() {
       return;
     }
 
-    axios
-      .post("http://localhost:3000/extensions/", formFields)
+    apiHandler
+      .createExtension(formFields)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.error("Error during creation process", error);

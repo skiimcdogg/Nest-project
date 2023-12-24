@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import CardType from "../../type";
 import dividerImage from "../../assets/images/divider-img.svg";
 import "./CardDetails.css";
+import apiHandler from '../../services/apiHandler';
 
 function CardDetails() {
   let cardId = useParams().id;
   const [card, setCard] = useState<CardType | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/cards/${cardId}`)
+    apiHandler
+      .getOneCard(cardId)
       .then((response) => {
         setCard(response.data);
       })

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import ExtensionsFilter from "../extensions-filter/ExtensionsFilter";
 import CardsList from "../cards-list/CardsList";
 import ExtensionType from "../../type";
@@ -7,6 +6,7 @@ import CardType from "../../type";
 import CreateExtensionForm from "../create-extension-form/CreateExtensionForm";
 import noCards from "../../assets/images/no-cards.png";
 import "./Home.css";
+import apiHandler from "../../services/apiHandler";
 
 function Home() {
   const [extensions, setExtensions] = useState<ExtensionType[]>([]);
@@ -18,10 +18,10 @@ function Home() {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("http://localhost:3000/extensions")
+    apiHandler
+      .getAllExtensions()
       .then((response) => {
-        setExtensions(response.data);
+        setExtensions(response);
         setLoading(false);
       })
       .catch((err) => {
@@ -32,10 +32,10 @@ function Home() {
 
   const fetchCards = () => {
     setLoading(true);
-    axios
-      .get("http://localhost:3000/cards/extensions/" + selectedExtension)
+    apiHandler
+      .getExtensionCards(selectedExtension)
       .then((response) => {
-        setCards(response.data);
+        setCards(response);
         setLoading(false);
       })
       .catch((err) => {
@@ -45,8 +45,8 @@ function Home() {
   };
 
   const toggleFavorite = (cardId: number) => {
-    axios
-      .patch("http://localhost:3000/cards/favorites/" + cardId)
+    apiHandler
+      .toggleFavorite(cardId)
       .then(() => {
         setCards(
           cards.map((card) => {
