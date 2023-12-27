@@ -81,7 +81,7 @@ Go to the react-app and:
 create an .env file for setting the url of the back-end:
 
 ```plaintext
-BACKEND_URL="http://localhost:3000"
+REACT_APP_BACKEND_URL=http://localhost:3000
 ```
 
 and, finally:
