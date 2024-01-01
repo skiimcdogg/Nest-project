@@ -1,13 +1,14 @@
 import { useState } from "react";
 import CreateExtensionForm from "../create-extension-form/CreateExtensionForm";
-import './FormToggler.css'
+import "./FormToggler.css";
 
 function FormToggler() {
-    const [showCreateExtensionForm, setShowCreateExtensionForm] = useState<boolean>(false);
+  const [showCreateExtensionForm, setShowCreateExtensionForm] =
+    useState<boolean>(false);
 
-    return (
-        <div className="form-toggler">
-            <button
+  return (
+    <div className="form-toggler">
+      <button
         className="form-toggler__button--show-form"
         onClick={() => setShowCreateExtensionForm((prev) => !prev)}
       >
@@ -20,8 +21,8 @@ function FormToggler() {
       >
         <CreateExtensionForm />
       </div>
-        </div>
-    );
-};
+    </div>
+  );
+}
 
 export default FormToggler;

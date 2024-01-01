@@ -3,7 +3,6 @@ import ExtensionsFilter from "../extensions-filter/ExtensionsFilter";
 import CardsList from "../cards-list/CardsList";
 import FormToggler from "../form-toggler/FormToggler";
 import noCards from "../../assets/images/no-cards.png";
-import "./Home.css";
 import useCards from "../../hooks/useCards";
 import useToggleFavorite from "../../hooks/useToggleFavorite";
 import useExtensions from "../../hooks/useExtensions";
