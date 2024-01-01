@@ -7,17 +7,13 @@ import "./Header.css";
 function Header() {
   return (
     <div className="header">
-      <div>
-        <Link to={"/"}>
-          <img src={homeLogo} alt="Home logo" />
-        </Link>
-      </div>
+      <Link to={"/"}>
+        <img src={homeLogo} alt="Home logo" />
+      </Link>
       <img src={magicLogo} className="header__magic-image" alt="Magic logo" />
-      <div>
-        <Link to={"/favorites"}>
-          <img src={favoriteLogo} alt="favorite logo" />
-        </Link>
-      </div>
+      <Link to={"/favorites"}>
+        <img src={favoriteLogo} alt="favorite logo" />
+      </Link>
     </div>
   );
 }
