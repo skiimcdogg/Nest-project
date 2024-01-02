@@ -1,6 +1,6 @@
 # Welcome to Magic App
 
-Welcome to Magic App, a comprehensive application thoughtfully built with a powerful tech stack: NestJS, React, TypeScript, and SQL. This project was developed as a personal journey to deepen my understanding and proficiency in TypeScript while also exploring and learning the ins and outs of NestJS.
+Welcome to Magic App, a comprehensive application thoughtfully built with a powerful tech stack: NestJS, React, TypeScript, and SQL. This project was developed as a personal journey to deepen my understanding and proficiency in TypeScript while also exploring and learning the ins and outs of NestJS. One of my goals here is to adhere to best practices by following, for example, the SOLID or BEM principles. 
 
 <img src="https://nestjs.com/img/logo-small.svg" width="100" alt="NestJS Logo" /> <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="100" alt="React Logo" /> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" width="100" alt="TypeScript Logo" /> <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png" width="100" alt="SQL Logo" />
 
