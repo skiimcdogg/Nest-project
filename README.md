@@ -59,7 +59,7 @@ DB_HOST="localhost"
 DB_NAME="magic_extensions"
 DB_USER="root"
 DB_PASSWORD="root"
-DB_PORT="3306"
+DB_PORT="3307"
 ```
 
 and then, you'll have to generate, run the migrations and run the script for filling the DB:
@@ -77,6 +77,15 @@ npm start
 ```
 
 Go to the react-app and:
+
+create an .env file for setting the url of the back-end:
+
+```plaintext
+REACT_APP_BACKEND_URL=http://localhost:3000
+```
+
+and, finally:
+
 ```bash
 npm install
 npm start

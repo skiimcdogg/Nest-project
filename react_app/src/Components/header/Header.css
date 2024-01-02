@@ -1,0 +1,13 @@
+.header {
+    padding: 1.5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e7f0fa;
+    box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header__magic-image {
+    display: block;
+    width: 35%;
+  }

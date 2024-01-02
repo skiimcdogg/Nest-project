@@ -1,0 +1,48 @@
+.creation-form__form {
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: larger;
+}
+
+.creation-form__form input {
+  font-size: 20px;
+}
+
+.creation-form__form label {
+  margin-bottom: 4px;
+  display: block;
+  color: #333;
+}
+
+.creation-form__form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.creation-form__form button {
+  background-color: #fbc427;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.creation-form__form button:hover {
+  background-color: #daa922;
+}
+
+.creation-form__infos {
+  font-style: italic;
+  font-size: 120%;
+}
