@@ -1,56 +1,17 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CardType from "../../type";
-import dividerImage from "../../assets/images/divider-img.svg";
+// import dividerImage from "../../assets/images/divider-img.svg";
 import "./CardDetails.css";
-import apiHandler from '../../services/apiHandler';
+import useOneCard from "../../hooks/useOneCard";
+import CardDetailsItem from "../card-details-item/CardDetailsItem";
 
 function CardDetails() {
-  let cardId = useParams().id;
-  const [card, setCard] = useState<CardType | null>(null);
-
-  useEffect(() => {
-    apiHandler
-      .getOneCard(cardId)
-      .then((response) => {
-        setCard(response.data);
-      })
-      .catch((err) => {
-        console.error("Error during the cards fetching", err);
-      });
-  });
+  let cardId = Number(useParams().id);
+  const { card } = useOneCard(cardId)
 
   return (
     <div className="card-details">
       {card ? (
-        <div className="card-details__container">
-          <div className="card-details__info">
-            <h2>{card.name}</h2>
-            <p>Type: {card.type}</p>
-            <p>Set Name: {card.extensionName}</p>
-            <p>Text: {card.text}</p>
-            <p>
-              Power/Toughness: {card.power}/{card.toughness}
-            </p>
-            <p>
-              Flavor: <i>{card.flavor}</i>
-            </p>
-          </div>
-          <div>
-            <img
-              src={dividerImage}
-              alt="divider"
-              className="card-details__divider-image"
-            />
-          </div>
-          <div>
-            <img
-              className="card-details__card-image"
-              src={card.imageUrl}
-              alt={card.name}
-            />
-          </div>
-        </div>
+        <CardDetailsItem card={card} />
       ) : (
         <p>Loading card details ...</p>
       )}
